@@ -1,0 +1,204 @@
+{
+    "name" : "KINGS",
+    "appid" : "__UNI__310A4C6",
+    "description" : "",
+    "versionName" : "1.0.4",
+    "versionCode" : 100,
+    "transformPx" : false,
+    /* 5+App特有相关 */
+    "app-plus" : {
+        "usingComponents" : true,
+        "nvueCompiler" : "uni-app",
+        "compilerVersion" : 3,
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : true,
+            "waiting" : true,
+            "autoclose" : true,
+            "delay" : 0
+        },
+        "compatible" : {
+            "ignoreVersion" : true
+        },
+        /* 模块配置 */
+        "modules" : {
+            "Payment" : {},
+            "Maps" : {},
+            "VideoPlayer" : {},
+            "LivePusher" : {},
+            "Barcode" : {},
+            "Camera" : {}
+        },
+        /* 应用发布信息 */
+        "distribute" : {
+            /* android打包配置 */
+            "android" : {
+                "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                ],
+                "autoSdkPermissions" : true,
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a" ]
+            },
+            /* ios打包配置 */
+            "ios" : {
+                "idfa" : false,
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "婵娟请求访问您的相册用于设置头像",
+                    "NSPhotoLibraryAddUsageDescription" : "婵娟请求访问您的相册用于设置头像",
+                    "NSCameraUsageDescription" : "婵娟请求使用您的摄像头用于设置头像",
+                    "NSMicrophoneUsageDescription" : "婵娟请求使用您的麦克风用于APP功能",
+                    "NSLocationWhenInUseUsageDescription" : "婵娟请求使用您的位置用于APP功能",
+                    "NSLocationAlwaysUsageDescription" : "婵娟请求使用您的位置用于APP功能",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "婵娟请求使用您的位置用于APP功能"
+                },
+                "dSYMs" : false
+            },
+            /* SDK配置 */
+            "sdkConfigs" : {
+                "oauth" : {},
+                "payment" : {
+                    "alipay" : {}
+                },
+                "ad" : {},
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "a6f24bd278d1a8b1d9e6a21989d97c42",
+                        "appkey_android" : "04d8607bbd4cb6c45c14aadf93d6141d"
+                    }
+                }
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/icons/72x72.png",
+                    "xhdpi" : "unpackage/res/icons/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                },
+                "ios" : {
+                    "iphone" : {
+                        "app@2x" : "unpackage/res/icons/120x120.png",
+                        "app@3x" : "unpackage/res/icons/180x180.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons/120x120.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "settings@3x" : "unpackage/res/icons/87x87.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "notification@3x" : "unpackage/res/icons/60x60.png"
+                    },
+                    "appstore" : "unpackage/res/icons/1024x1024.png",
+                    "ipad" : {
+                        "app" : "unpackage/res/icons/76x76.png",
+                        "app@2x" : "unpackage/res/icons/152x152.png",
+                        "notification" : "unpackage/res/icons/20x20.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons/167x167.png",
+                        "settings" : "unpackage/res/icons/29x29.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "spotlight" : "unpackage/res/icons/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                    }
+                }
+            },
+            "splashscreen" : {
+                "android" : {
+                    "hdpi" : "/Volumes/TAOJINGJING/taojingjing/Mill-Poject/犀牛/犀牛logo-启动页/启动页-下载页/xhdpi/default.png",
+                    "xhdpi" : "/Volumes/TAOJINGJING/taojingjing/EXCHANGE/七星学院/app/启动页/720*1242.png",
+                    "xxhdpi" : "/Volumes/TAOJINGJING/taojingjing/EXCHANGE/七星学院/app/启动页/108081882.png"
+                },
+                "ios" : {
+                    "iphone" : {
+                        "portrait-896h@3x" : "",
+                        "landscape-896h@3x" : "",
+                        "landscape-896h@2x" : "",
+                        "portrait-896h@2x" : "",
+                        "retina35" : "",
+                        "retina55" : "",
+                        "iphonex" : "",
+                        "retina47" : "",
+                        "retina40" : ""
+                    }
+                },
+                "androidStyle" : "common"
+            }
+        },
+        "nativePlugins" : {}
+    },
+    /* 快应用特有相关 */
+    "quickapp" : {},
+    /* 小程序特有相关 */
+    "mp-weixin" : {
+        "appid" : "wxfff5655038a5b27e",
+        "setting" : {
+            "urlCheck" : true,
+            "es6" : true,
+            "minified" : false,
+            "postcss" : false
+        },
+        "usingComponents" : true,
+        "permission" : {}
+    },
+    "mp-alipay" : {
+        "usingComponents" : true
+    },
+    "mp-baidu" : {
+        "usingComponents" : true
+    },
+    "mp-toutiao" : {
+        "usingComponents" : true
+    },
+    "h5" : {
+        "title" : "kings",
+        "router" : {
+            "mode" : "history",
+            "base" : ""
+        },
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : ""
+                }
+            }
+        },
+        "devServer" : {
+            "https" : false,
+            "port" : "",
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/gateway" : {
+                    "target" : "http://47.243.83.119:18083",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/gateway" : ""
+                    }
+                }
+            }
+        },
+        "template" : "",
+        "domain" : "http://app2020hdekehhe.bishen.co"
+    },
+    "fallbackLocale" : "zh-Hans",
+    "locale" : "zh-Hans"
+}

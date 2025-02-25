@@ -1,0 +1,241 @@
+<template>
+  <div class="card_box">
+    <div class="navBox">
+      <div class="back">
+        <image src="../../static/image/go_back2.png" alt="" @click="goBack()" />
+      </div>
+      <div class="title">{{ $t('user.secure.option2Page.pageTitle') }}</div>
+      <div class="div"></div>
+    </div>
+    <view class="container">
+      <div class="app_bold">
+        <div class="label">{{ $t('user.secure.option2Page.oldPassword') }}</div>
+        <div class="input">
+          <input type="password" v-model="oldPassword" :placeholder="$t('user.secure.option2Page.oldPassword')" />
+        </div>
+        <div class="label">{{ $t('user.secure.option2Page.code') }}</div>
+        <div class="code">
+          <div class="input">
+            <input type="text" v-model="msgCode" :placeholder="$t('user.secure.option2Page.code')" />
+          </div>
+          <div class="jsq" @click="setCode" v-if="setStatte">{{ label }}</div>
+          <div class="jsq" v-else>{{ label }}</div>
+        </div>
+        <div class="label">{{ $t('user.secure.option2Page.newPassword') }}</div>
+        <div class="input">
+          <input type="password" v-model="newPassword" :placeholder="$t('user.secure.option2Page.newPassword')" />
+        </div>
+
+      <div class="cz" @click="goreset()">{{ $t('user.secure.option2Page.forgetPassword') }}</div>
+
+      </div>
+
+      <div class="submit">
+        <div @click="submit()">{{ $t('user.secure.option2Page.save') }}</div>
+      </div>
+    </view>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      jsp: "",
+      submitState: true,
+      setStatte: true,
+      label: this.$t('user.secure.option2Page.sendCode'),
+      msgCode: "",
+      oldPassword: "",
+      newPassword: "",
+    };
+  },
+  onShow() {},
+  mounted() {},
+  methods: {
+    goBack() {
+      uni.navigateBack({
+        delta: 1, // 默认值是1，表示返回的页面层数
+      });
+    },
+    goreset() {
+      uni.navigateTo({ url: `/pages/user/resetPassword` });
+    },
+    async setCode() {
+      if (!this.setStatte) {
+        return;
+      }
+      let res = await this.$request.post("/uc/captchaAuth/sendCode", {
+        data: {
+          codeType: "12",
+          type: "1",
+        },
+      });
+      this.setStatte = false;
+      if (res.data.code == 0) {
+        this.label = 60;
+        this.jsp = setInterval(() => {
+          if (this.label < 0) {
+            this.label = "发送验证码";
+            this.setStatte = true;
+            clearInterval(this.jsp);
+          } else {
+            this.label = this.label - 1;
+          }
+        }, 1000);
+      } else {
+        this.setStatte = true;
+        this.$api.msg(res.data.message);
+      }
+    },
+    async submit() {
+      if (!this.oldPassword || !this.newPassword) {
+        this.$api.msg("请输入密码");
+        return;
+      }
+      if (!this.msgCode) {
+        this.$api.msg("请输入验证码");
+        return;
+      }
+      uni.showLoading({
+        title: "loading..",
+        mask: true,
+      });
+      let res = await this.$request.post("/uc/approve/update/transaction/password", {
+        data: {
+          oldPassword: this.oldPassword,
+          newPassword: this.newPassword,
+          type: 1,
+          msgCode: this.msgCode,
+          googleCode: "",
+        },
+      });
+      uni.hideLoading();
+      if (res.data.code == 0) {
+        this.$api.msg("设置成功");
+        setTimeout(() => {
+          uni.navigateBack({
+            delta: 1, // 默认值是1，表示返回的页面层数
+          });
+        }, 1000);
+      } else {
+        this.$api.msg(res.data.message);
+      }
+    },
+  },
+};
+</script>
+
+<style scoped lang="less">
+.card_box {
+  background: #000;
+  min-height: 100vh;
+  padding-top: 30px;
+  box-sizing: border-box;
+}
+.navBox {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 15px;
+  background: #000;
+
+  .div,
+  .rec {
+    width: 76rpx;
+    height: 76rpx;
+  }
+
+  .title {
+    font-weight: bold;
+  }
+
+  .back {
+    image {
+      width: 76rpx;
+      height: 76rpx;
+      display: block;
+    }
+  }
+
+  .record {
+    width: 48rpx;
+    height: 48rpx;
+  }
+}
+.container {
+  padding: 40rpx 32rpx;
+  // background: #f5f6fa;
+  .app_bold {
+    .label {
+      font-size: 24rpx;
+      color: #fff;
+      margin-bottom: 24rpx;
+    }
+    .input {
+      margin-bottom: 20rpx;
+      border-radius: 16rpx;
+      border: 1rpx solid rgba(151, 151, 151, 0.5);
+      padding: 26rpx 24rpx;
+      font-size: 24rpx;
+      input {
+        border: none;
+        background: none;
+        flex: 1;
+        font-size: 24rpx;
+        width: 100%;
+        font-weight: 400;
+        color: #fff;
+        line-height: 32rpx;
+      }
+    }
+  }
+
+  .submit {
+    position: fixed;
+    box-sizing: border-box;
+    width: 100%;
+    bottom: 40rpx;
+    left: 0;
+    padding: 0 32rpx;
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      background: #f0c473;
+
+      border-radius: 5px;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+      line-height: 22px;
+    }
+  }
+}
+.code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  input {
+    width: 60%;
+    margin-bottom: 0;
+  }
+  .jsq {
+    width: 100px;
+    padding: 5px 0;
+    text-align: center;
+    border: 1px solid #f0c473;
+    color: #f0c473;
+    border-radius: 10px;
+  }
+}
+    .cz {
+      margin-top: 10px;
+      font-weight: 400;
+      font-size: 28rpx;
+      color: #f0c473;
+      text-align: center;
+    }
+</style>
