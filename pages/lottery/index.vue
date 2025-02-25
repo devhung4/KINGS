@@ -4,12 +4,13 @@
     <view class="page">
       <!-- navbar Start -->
       <view class="page__navbar">
-        <text class="page__navbar-left">
+        <view
+          @tap="goBack"
+          class="page__navbar-left">
           <image
             src="../../static/icons/icon-back-512.png"
-            mode="scaleToFill"
-          />
-        </text>
+            mode="scaleToFill" />
+        </view>
         <text class="page__navbar-title">國王寶箱</text>
         <text
           @tap="$refs.rulesDescRef.open()"
@@ -174,6 +175,9 @@ export default {
         }
       )
       console.log(response)
+    },
+    goBack() {
+      uni.navigateBack({ delta: 1 })
     },
   },
   mounted() {
