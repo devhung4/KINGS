@@ -1377,16 +1377,16 @@
 			}
 		},
 		{
-			"path": "pages/kingsBox/kingsBox",
+			"path": "pages/lottery/index",
 			"style": {
 				"navigationBarTitleText": "國王寶箱",
 				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/kingsBox/history",
+			"path": "pages/lottery/history",
 			"style": {
-				"navigationBarTitleText": "history",
+				"navigationBarTitleText": "開箱歷史",
 				"navigationStyle": "custom"
 			}
 		}

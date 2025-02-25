@@ -95,7 +95,7 @@
       <!-- 抽奖系统入口 -->
       <view
         class="floating-button"
-        @tap="toKingsBox()">
+        @tap="$toPage('/pages/lottery/index')">
         入口
       </view>
     </template>
