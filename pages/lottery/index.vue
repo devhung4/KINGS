@@ -4,7 +4,12 @@
     <view class="page">
       <!-- navbar Start -->
       <view class="page__navbar">
-        <text class="page__navbar-left">Back</text>
+        <text class="page__navbar-left">
+          <image
+            src="../../static/icons/icon-back-512.png"
+            mode="scaleToFill"
+          />
+        </text>
         <text class="page__navbar-title">國王寶箱</text>
         <text
           @tap="$refs.rulesDescRef.open()"
@@ -217,6 +222,14 @@ $primary-color: #f0c474;
     position: relative;
     height: 40px;
     padding: 0 15px 0 15px;
+    &-left {
+      width: 22px;
+      height: 22px;
+      image {
+        width: 100%;
+        height: 100%;
+      }
+    }
     &-title {
       position: absolute;
       top: 50%;
