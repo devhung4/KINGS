@@ -42,31 +42,7 @@
           </view>
 
           <!-- 奖品池 START -->
-          <!-- <view class="container">
-            <view
-              class="scroll-container"
-              @touchstart="handleTouchStart"
-              @touchend="handleTouchEnd">
-              <view
-                class="prize-wrapper"
-                :style="scrollStyle">
-                <view
-                  v-for="(item, index) in prizes"
-                  :key="index"
-                  class="prize-item">
-                  {{ item.name }}
-                </view>
-                <view
-                  v-for="(item, index) in prizes"
-                  :key="index + '_copy'"
-                  class="prize-item">
-                  {{ item.name }}
-                </view>
-              </view>
-            </view>
-          </view> -->
-          <prizes-pool />
-          <!-- <prize-pool :prizes="prizes" /> -->
+          <prize-pool :prizes="prizes" />
           <!-- 奖品池 END -->
 
           <view class="price">
@@ -112,11 +88,11 @@
         <!-- item3 END -->
 
         <!-- item4 START -->
-        <!-- <view class="page__content-item item4">
-        <view class="head">
-          <text class="head__left">活動背景</text>
+        <view class="page__content-item item4">
+          <view class="head">
+            <text class="head__left">活動背景</text>
+          </view>
         </view>
-      </view> -->
         <!-- item4 END -->
       </view>
       <!-- 页面内容 END -->
@@ -152,10 +128,7 @@
             src="../../static/image/lottery-ball.png"
             mode="scaleToFill" />
         </view>
-        <text class="lottery-container__text">
-          <text style="flex-shrink: 0">抽奖中</text>{{ dots }}
-          <!-- <text style="opacity: 0;">...</text>   -->
-        </text>
+        <text class="lottery-container__text">抽奖中...</text>
       </view>
     </uni-popup>
     <!-- 抽奖模态框 END -->
@@ -173,47 +146,18 @@
 <script>
 import CustomModal from '../../components/custom-modal.vue'
 import PrizePool from './components/prize-pool.vue'
-import PrizesPool from './components/prizes-pool.vue'
 export default {
   components: {
     CustomModal,
     PrizePool,
-    PrizesPool,
   },
   data() {
     return {
-      // 奖品
       prizes: [],
-      isTouching: false,
-      animation: null,
-      isScrolled: false,
-      isLoading: false,
-      isLoaded: false,
-      isSticky: false,
-      lastScrollTop: 0,
-      dots: '',
-      timer: null,
-      isLottering: false,
     }
   },
-  computed: {
-    scrollStyle() {
-      return {
-        animationPlayState: this.isTouching ? 'paused' : 'running',
-        animationDuration: `${this.prizes.length * 2}s`, // 根据奖品数量调整速度
-      }
-    },
-  },
+  computed: {},
   methods: {
-    onPrizeTap(prize) {
-      console.log(prize)
-    },
-    handleTouchStart() {
-      this.isTouching = true
-    },
-    handleTouchEnd() {
-      this.isTouching = false
-    },
     async getDrawsNumber() {
       const response = await this.$request.post(
         '/zhaotoubao-server/user/getExtractNumber',
@@ -226,101 +170,14 @@ export default {
       )
       console.log(response)
     },
-    startLottery() {
-      if (this.isLottering) return
-      this.$refs.lotteryModalRef.open()
-      this.isLottering = true
-      this.timer = setInterval(() => {
-        this.dots = this.dots.length >= 3 ? '' : this.dots + '.'
-      }, 500)
-      // 模拟抽奖接口
-      setTimeout(() => {
-        this.stopAnimation()
-        this.$refs.lotteryModalRef.close()
-        uni.showToast({ title: '抽奖完成' })
-      }, 5000)
-    },
-    stopAnimation() {
-      clearInterval(this.timer)
-      this.dots = ''
-      this.isLottering = false
-    },
-  },
-  beforeDestroy() {
-    this.stopAnimation()
   },
   mounted() {
-    // this.$refs.lotteryModalRef.open()
-    // 动态生成奖品数据（权重与库存成反比）
     this.prizes = new Array(10).fill(0).map((_, i) => {
-      // 权重按倒序排列（索引0权重最高）
-      const weight = 10 - i
-      // 库存与权重正相关（权重越高库存越多）
-      const stock = Math.floor(weight * 2.5 + 5)
-
       return {
         id: i + 1,
         name: `獎品${i + 1}`,
-        weight: weight,
-        stock: stock,
-        baseStock: stock, // 保留初始库存用于重置
-        // 添加概率显示字段（演示用）
-        probability: ((weight / 55) * 100).toFixed(1) + '%', // 总权重为55（10+9+...+1）
       }
     })
-
-    // 带权重和库存的抽奖算法
-    this.drawPrize = () => {
-      // 过滤有库存的奖品并计算总权重
-      const availablePrizes = this.prizes.filter((p) => p.stock > 0)
-      if (availablePrizes.length === 0) {
-        uni.showToast({
-          title: '所有奖品已抽完，请稍后再试',
-          icon: 'none',
-        })
-        return null
-      }
-
-      const totalWeight = availablePrizes.reduce((sum, p) => sum + p.weight, 0)
-      const random = Math.random() * totalWeight
-
-      // 轮盘赌算法选择奖品
-      let currentWeight = 0
-      for (const prize of availablePrizes) {
-        currentWeight += prize.weight
-        if (random < currentWeight) {
-          // 记录抽奖前库存
-          const originalStock = prize.stock
-
-          // 原子操作：减少库存并返回副本
-          const selected = {
-            ...prize,
-            stock: --prize.stock,
-          }
-
-          // 当库存归零时，60秒后自动重置（演示用）
-          if (prize.stock === 0) {
-            setTimeout(() => {
-              prize.stock = prize.baseStock
-              this.$forceUpdate() // 触发视图更新
-              console.log(`奖品${prize.id}库存已重置为${prize.baseStock}`)
-            }, 60000)
-          }
-
-          // 打印抽奖日志
-          console.log(
-            `抽中奖品：${selected.name} | 权重：${selected.weight} | ` +
-              `剩余库存：${originalStock}→${selected.stock} | 中奖概率：${selected.probability}`
-          )
-
-          return selected
-        }
-      }
-
-      // 理论上不会执行到这里
-      console.error('抽奖算法异常，未找到合适奖品')
-      return null
-    }
   },
 }
 </script>
@@ -645,13 +502,7 @@ $primary-color: #f0c474;
     }
   }
   &__text {
-    // margin-right: 48rpx;
-    display: inline-flex;
     color: #ffffff;
-
-    text {
-      flex-shrink: 0;
-    }
   }
 }
 </style>

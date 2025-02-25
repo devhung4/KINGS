@@ -42,7 +42,7 @@ export default {
     scrollStyle() {
       return {
         animationPlayState: this.isTouching ? 'paused' : 'running',
-        animationDuration: `${this.prizes.length * 1.5}s`, // 根据奖品数量调整速度
+        animationDuration: '10s',
         // animationDuration: '10s', // 根据奖品数量调整速度
       }
     },
@@ -58,7 +58,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @keyframes scroll {
   0% {
     transform: translateX(0);
@@ -81,7 +81,6 @@ export default {
       gap: 8px;
       height: 100%;
       animation: scroll linear infinite;
-      will-change: transform;
       &__item {
         flex-shrink: 0;
         width: 96px;
