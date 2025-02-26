@@ -41,7 +41,7 @@
           <view class="head">
             <text class="head__left">寶物總價值</text>
             <text
-              @tap="$toPage('/pages/kingsBox/history')"
+              @tap="$toPage('/pages/lottery/history')"
               class="head__right">
               抽籤歷史&nbsp;&gt;
             </text>

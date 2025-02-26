@@ -318,4 +318,22 @@ export default {
       },
     },
   },
+
+  // 国王宝箱
+  lottery: {
+    index: {
+      navbar :{
+        title: '國王寶箱',
+        right: '規則説明'
+      },
+      container1: {
+        text1: '王國寶箱海量好禮',
+        text2: '居民每日享免費抽取機會'
+      },
+      container2: {
+        text1: '寶物總價值',
+        text2: '抽獎歷史'
+      }
+    }
+  }
 }
