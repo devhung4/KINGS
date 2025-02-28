@@ -55,7 +55,7 @@
       >
         {{ $t('login.buttons.submit') }}
       </view>
-      <!-- <div class="down" @click="godown()">下载客户端app</div> -->
+      <div class="down" @click="godown()">下载客户端app</div>
     </view>
 
     <u-popup

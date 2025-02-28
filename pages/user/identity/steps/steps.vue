@@ -8,14 +8,70 @@
         mode="scaleToFill" />
       <text class="title">信息認證</text>
     </view>
-    <view class="content"></view>
+
+    <Steps style="margin-top: 16px" />
+
+    <view class="content">
+
+      <component
+        :is="currentComp"
+        @step-change="handleStepChange" />
+
+
+      <view
+        @tap="handleStepChange({ type: 'next'})"
+        class="next-btn">
+        <text>{{ currentStep === 2 ? '完成' : '下一步' }}</text>
+      </view>
+
+    </view>
   </view>
 </template>
 
 <script>
+import Steps from './components/Steps.vue'
+import Step1 from './components/Step1.vue'
+import Step2 from './components/Step2.vue'
+import Step3 from './components/Step3.vue'
 export default {
+  components: {
+    Steps,
+    Step1,
+    Step2,
+    Step3,
+  },
   data() {
-    return {}
+    return {
+      currentStep: 0, // 當前認證步驟
+    }
+  },
+  methods: {
+    async handleStep() {
+      const jsonData = JSON.stringify({
+        Step1: {},
+      })
+      await uni.setStorageSync('stepsData', jsonData)
+    },
+  },
+  computed: {
+    currentComp() {
+      return `Step${this.currentStep + 1}`
+    },
+  },
+  methods: {
+    async handleStepChange({ type, data }) {
+      if (type === 'next') {
+        // this.$set(this.formData, `step${this.currentStep + 1}`, data)
+        if (this.currentStep < 2) {
+          this.currentStep++
+        } else {
+          // this.submitAllData()
+          console.log('步驟結束')
+        }
+      } else {
+        this.currentStep--
+      }
+    },
   },
 }
 </script>
@@ -62,6 +118,22 @@ export default {
     min-height: calc(100vh - (56px + 44px));
     height: 100%;
     overflow-y: auto;
+  }
+
+  .next-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 48px;
+    border-radius: 14px;
+    background: #f0c473;
+    margin-top: 40px;
+    text {
+      font-size: 17px;
+      font-weight: 600;
+      color: #000;
+    }
   }
 }
 </style>

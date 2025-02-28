@@ -93,11 +93,11 @@
       </custom-modal>
 
       <!-- 抽奖系统入口 -->
-      <view
+      <!-- <view
         class="floating-button"
         @tap="$toPage('/pages/lottery/index')">
         入口
-      </view>
+      </view> -->
     </template>
   </view>
 </template>

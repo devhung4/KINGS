@@ -113,7 +113,6 @@
         </div>
       </view>
     </view>
-    <view>Hello</view>
   </view>
 </template>
 
