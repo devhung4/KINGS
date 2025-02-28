@@ -180,7 +180,7 @@ export default {
     },
     gorenzhe() {
       if (this.userInfo.realNameStatus == 0) {
-        uni.navigateTo({ url: '/pages/user/identity2' })
+        uni.navigateTo({ url: '/pages/user/identity/index' })
       }
     },
     godetail(url) {

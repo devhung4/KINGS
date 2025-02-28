@@ -1391,9 +1391,17 @@
 			}
 		},
 		{
-			"path": "pages/user/identity2",
+			"path": "pages/user/identity/index",
 			"style": {
-				"navigationBarTitleText": "identity2",
+				"navigationBarTitleText": "信息認證",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/user/identity/steps/steps",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
 				"navigationStyle": "custom"
 			}
 		}

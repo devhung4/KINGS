@@ -6,7 +6,7 @@ import i18n from "./i18n/index.js";
 import request from "js_sdk/cooke-request/request/request.js";
 
 import uView from "uview-ui";
-import { toPage } from "./utils/index.js";
+import { toPage, goBack } from "./utils/index.js";
 
 Vue.use(uView);
 
@@ -162,6 +162,7 @@ Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
 Vue.prototype._i18n = i18n;
 Vue.prototype.$toPage = toPage; // 跳转页面
+Vue.prototype.$goBack = goBack; // 返回上一页
 Vue.prototype.$api = {
   msg,
   json,
