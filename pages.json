@@ -1389,6 +1389,13 @@
 				"navigationBarTitleText": "開箱歷史",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/user/identity2",
+			"style": {
+				"navigationBarTitleText": "identity2",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {
