@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@vue/composition-api": "^1.7.2",
+    "flag-icons": "^7.3.2",
     "qrcode": "^1.5.4",
     "uqrcodejs": "^4.0.7",
     "uview-ui": "^2.0.37",

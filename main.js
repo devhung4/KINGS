@@ -103,21 +103,21 @@ request.setConfig({
 
 // 设置请求拦截器
 request.interceptors.request((config) => {
-  if(config.data && config.data.base){
+  if (config.data && config.data.base) {
     if (uni.getStorageSync("token")) {
       config.header["token"] = uni.getStorageSync("token");
-      config.header["content-type"]="application/json"
+      config.header["content-type"] = "application/json"
     } else {
       config.header["token"] = "";
     }
-  }else{
+  } else {
     if (uni.getStorageSync("token")) {
       config.header["x-auth-token"] = uni.getStorageSync("token");
     } else {
       config.header["x-auth-token"] = "";
     }
   }
-  
+
   // 配置参数和全局配置相同，此优先级最高，会覆盖在其他地方的相同配置参数
 
   // 追加请求头，推荐
@@ -137,11 +137,11 @@ request.interceptors.request((config) => {
 
 // 设置响应拦截器
 request.interceptors.response((res) => {
-  if(res.data.code == 4000 || (res.data.base && res.data.base.code == '100102')){
+  if (res.data.code == 4000 || (res.data.base && res.data.base.code == '100102')) {
     uni.navigateTo({
       url: "../public/login",
     });
-  }else{
+  } else {
     return res; // 原样返回
   }
   // 接收请求，执行响应操作
@@ -150,7 +150,7 @@ request.interceptors.response((res) => {
   // return false;    // 阻止返回,页面不会接收返回值
   // return {message: '自定义值，来自拦截器'};   // 返回您自定义的值，将覆盖原始返回值
   // return Promise.reject('error from response interceptors') // 向外层抛出错误，用catch捕获
-  
+
 });
 
 // // 挂载到全局vue实例上，在页面中可以使用this.$request调用request实例下相应方法

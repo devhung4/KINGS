@@ -11,7 +11,12 @@
     :style="{
       zIndex: mode === 'bottom' && 9999,
     }">
-    <view :class="`custom-modal custom-modal__${mode}`">
+    <view
+      :class="[
+        'custom-modal',
+        `custom-modal__${mode}`,
+        fullScreen ? 'custom-modal__full' : '',
+      ]">
       <view
         v-if="title"
         class="custom-modal__title">
@@ -22,7 +27,9 @@
         class="custom-modal__content">
         <slot></slot>
       </view>
-      <view class="custom-modal__button-group">
+      <view
+        v-if="showConfirmButton || showCancelButton"
+        class="custom-modal__button-group">
         <button
           v-if="showCancelButton"
           @tap="handleCancel"
@@ -74,6 +81,11 @@ export default {
       type: String,
       default: '取消',
     },
+    fullScreen: {
+      type: Boolean,
+      default: false,
+      validator: (val) => typeof val === 'boolean',
+    },
   },
   data() {
     return {}
@@ -113,6 +125,10 @@ export default {
   // 开启GPU加速
   will-change: transform, opacity;
   backface-visibility: hidden;
+
+  &__full {
+    min-height: calc(100vh - 56px);
+  }
 
   &__center {
     width: 575rpx;

@@ -50,7 +50,6 @@
                   <span>{{ $t('airdrop.container2.text4') }}</span>
                 </div>
               </div>
-              <!-- 兑换按钮 -->
               <div
                 class="lab2"
                 @click="duihuan(item.id)">
@@ -80,7 +79,7 @@
         <view class="address-list">
           <view
             :key="item.id"
-            v-for="(item, index) in address"
+            v-for="(item, index) in $store.state.userAddress"
             @tap="selectedAddrIndex = index"
             :class="
               selectedAddrIndex === index
@@ -186,31 +185,25 @@ export default {
 
     // 获取用户地址
     async getUserAddress() {
-      const res = await this.$request.post('/uc/withdraw/address/page')
-      if (res.data.code === 0) {
-        const content = res.data.data.content
-        if (Array.isArray(content) && content.length > 0) {
-          // this.address = content
-          const newData = [...content, { id: 2, address: 'test' }]
-          this.address = newData
-          return true
-        } else {
-          this.address = [[]]
-          return false
-        }
-      }
+      this.$store.dispatch('fetchUserAddress', this.$request)
+      // const res = await this.$request.post('/uc/withdraw/address/page')
+      // if (res.data.code === 0) {
+      //   const content = res.data.data.content
+      //   if (Array.isArray(content) && content.length > 0) {
+      //     // this.address = content
+      //     // const newData = [...content, { id: 2, address: 'test' }]
+      //     this.address = content
+      //     return true
+      //   } else {
+      //     this.address = [[]]
+      //     return false
+      //   }
+      // }
     },
 
     // 获取用户是否有开卡
     async getUserCards() {
-      const res = await this.$request.post('/finance/card/findPhysicalCards')
-      if (res.data.code === 0) {
-        const content = res.data.data.content
-        this.hasCard = Array.isArray(content) && content.length > 0
-        return true
-      } else {
-        return false
-      }
+      this.$store.dispatch('fetchUserCardList', this.$request)
     },
 
     async fetcher() {
@@ -231,7 +224,7 @@ export default {
     },
     duihuan(id) {
       if (!id) return
-      if (!this.hasCard) {
+      if (!this.$store.state.userHasCards) {
         uni.showModal({
           title: '開卡即可兌換空投',
           content: '',
@@ -322,6 +315,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 15px;
+
   &__item {
     border: 2px solid #dedede;
     padding: 10px 5px 10px 5px;
@@ -329,11 +323,13 @@ export default {
     border-radius: 12px;
     font-size: 14px;
     text-align: center;
+
     &-selected {
       border: 2px solid hsl(39, 81%, 70%);
     }
   }
 }
+
 // page {
 //   background-color: #f4f5f6;
 //   height: 100%;
@@ -349,6 +345,7 @@ export default {
   flex-direction: column;
   // background: RGBA(248, 248, 248, 1);
 }
+
 .uni-navbar {
   height: 100rpx;
   background: #ffffff;
@@ -357,9 +354,11 @@ export default {
   justify-content: space-around;
   align-items: center;
 }
+
 .heder {
   background: #000;
 }
+
 .bala {
   margin: 4px 16px 20px;
   background: linear-gradient(
@@ -370,10 +369,12 @@ export default {
   border-radius: 34rpx;
   padding: 8rpx 8rpx 32rpx;
   box-sizing: border-box;
+
   .ba_hed {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     .ba_itm {
       box-sizing: border-box;
       padding: 22rpx 28rpx 14rpx;
@@ -383,9 +384,11 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+
       .ba_1 {
         display: flex;
         align-items: center;
+
         div {
           font-weight: 400;
           font-size: 31rpx;
@@ -393,6 +396,7 @@ export default {
           line-height: 40rpx;
         }
       }
+
       .ba_2 {
         margin-top: 20rpx;
         font-weight: 400;
@@ -400,18 +404,21 @@ export default {
         color: #f0c473;
         line-height: 86rpx;
       }
+
       .ba_3 {
         font-weight: 400;
         font-size: 27rpx;
         color: rgba(0, 0, 0, 0.8);
         line-height: 38rpx;
       }
+
       .ba_4 {
         font-weight: 400;
         font-size: 31rpx;
         color: rgba(235, 235, 245, 0.6);
         line-height: 40rpx;
       }
+
       .ba_5 {
         margin-top: 20rpx;
         font-weight: 400;
@@ -420,10 +427,12 @@ export default {
         line-height: 86rpx;
       }
     }
+
     .ba_it1 {
       width: 59%;
     }
   }
+
   .liushui {
     margin: 20rpx 0 0 20rpx;
     font-weight: 400;
@@ -432,13 +441,16 @@ export default {
     line-height: 38rpx;
   }
 }
+
 .chahua {
   position: relative;
   margin: 20px 23rpx 0;
+
   image {
     width: 100%;
     height: 170rpx;
   }
+
   div {
     position: absolute;
     top: 23rpx;
@@ -448,6 +460,7 @@ export default {
     color: #ffffff;
     line-height: 53rpx;
   }
+
   span {
     position: absolute;
     top: 90rpx;
@@ -458,24 +471,28 @@ export default {
     line-height: 31rpx;
   }
 }
+
 .guanggao {
   padding: 20rpx 8rpx 8rpx 8rpx;
   background: rgba(31, 32, 41, 0.6);
   border-radius: 34rpx;
   padding: 20rpx 10rpx 10rpx;
   margin: 0 23rpx 0;
+
   .guan_tit {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-bottom: 10rpx;
     margin: 0 16rpx;
+
     div {
       font-weight: 600;
       font-size: 32rpx;
       color: rgba(235, 235, 245, 0.8);
       line-height: 42rpx;
     }
+
     span {
       font-weight: 400;
       font-size: 25rpx;
@@ -483,6 +500,7 @@ export default {
       line-height: 34rpx;
     }
   }
+
   .guo_itm {
     margin-top: 20rpx;
     display: flex;
@@ -491,14 +509,17 @@ export default {
     background: rgba(71, 76, 100, 0.1);
     border-radius: 27rpx;
     padding: 24rpx 16rpx 32rpx 24rpx;
+
     .itm_lef {
       display: flex;
       align-items: center;
+
       image {
         width: 45.8rpx;
         height: 45.8rpx;
         margin-right: 8rpx;
       }
+
       div {
         margin-right: 18rpx;
         font-weight: bold;
@@ -506,6 +527,7 @@ export default {
         color: #ffffff;
         line-height: 38rpx;
       }
+
       span {
         padding: 0 10rpx;
         display: block;
@@ -518,20 +540,25 @@ export default {
         text-align: left;
       }
     }
+
     .itm_rig {
       display: flex;
       align-items: center;
+
       .lab1 {
         text-align: right;
+
         .div1 {
           font-weight: 400;
           font-size: 23rpx;
           color: rgba(255, 255, 255, 0.4);
           line-height: 31rpx;
+
           span {
             color: #fff;
           }
         }
+
         .div2 {
           margin-top: 5rpx;
           font-weight: 400;
@@ -545,6 +572,7 @@ export default {
           }
         }
       }
+
       .lab2 {
         padding: 12rpx 30rpx;
         background: rgba(240, 196, 115, 0.8);

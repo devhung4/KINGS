@@ -1,29 +1,17 @@
 <template>
   <view class="steps-page">
     <view class="navbar">
-      <image
-        class="back"
-        @tap="$goBack"
-        src="../../../../static/icons/icon-back-512.png"
-        mode="scaleToFill" />
+      <image class="back" @tap="goBack" src="../../../../static/icons/icon-back-512.png" mode="scaleToFill" />
       <text class="title">信息認證</text>
     </view>
-
-    <Steps style="margin-top: 16px" />
-
+    <Steps :currentStep="currentStep" />
     <view class="content">
-
-      <component
-        :is="currentComp"
-        @step-change="handleStepChange" />
-
-
-      <view
-        @tap="handleStepChange({ type: 'next'})"
-        class="next-btn">
-        <text>{{ currentStep === 2 ? '完成' : '下一步' }}</text>
-      </view>
-
+      <Step1 v-if="currentStep === 0" :formData.sync="dataCollection" @step-change="handleStepChange"
+        @update:step="updateStep" />
+      <Step2 v-else-if="currentStep === 1" :formData.sync="dataCollection" @step-change="handleStepChange"
+        @update:step="updateStep" />
+      <Step3 v-else="currentStep === 2" :formData.sync="dataCollection" @step-change="handleStepChange"
+        @update:step="updateStep" />
     </view>
   </view>
 </template>
@@ -33,6 +21,7 @@ import Steps from './components/Steps.vue'
 import Step1 from './components/Step1.vue'
 import Step2 from './components/Step2.vue'
 import Step3 from './components/Step3.vue'
+
 export default {
   components: {
     Steps,
@@ -43,33 +32,57 @@ export default {
   data() {
     return {
       currentStep: 0, // 當前認證步驟
+      allData: {},
+      dataCollection: {}
     }
-  },
-  methods: {
-    async handleStep() {
-      const jsonData = JSON.stringify({
-        Step1: {},
-      })
-      await uni.setStorageSync('stepsData', jsonData)
-    },
   },
   computed: {
     currentComp() {
       return `Step${this.currentStep + 1}`
     },
   },
+  mounted() {},
+
+  watch: {
+    dataCollection: {
+      handler(newVal) {
+        uni.setStorageSync('identity_data', JSON.stringify(newVal))
+      },
+      deep: true
+    }
+  },
+
   methods: {
-    async handleStepChange({ type, data }) {
-      if (type === 'next') {
-        // this.$set(this.formData, `step${this.currentStep + 1}`, data)
-        if (this.currentStep < 2) {
-          this.currentStep++
-        } else {
-          // this.submitAllData()
-          console.log('步驟結束')
-        }
-      } else {
+
+    updateStep(step, data) {
+      if (Number.isNaN(step)) return
+      if (!data) this.dataCollection = {}
+      this.dataCollection = { ...this.dataCollection, ...data }
+      this.currentStep = step
+    },
+
+    // restoreData() {
+    //   try {
+    //     const savedData = uni.getStorageSync('identity_data')
+    //     if (savedData) {
+    //       const parsedData = JSON.parse(savedData)
+    //       this.dataCollection = parsedData || {}
+    //     } else {
+    //       this.dataCollection = {}
+    //     }
+    //   } catch (error) {
+    //     console.error('恢复数据失败:', error)
+    //     this.allData = {}
+    //   }
+    // },
+
+    goBack() {
+      if (this.currentStep === 0) {
+        return uni.navigateTo({ url: '/pages/user/identity/index' })
+      }
+      if (this.currentStep === 1 || this.currentStep === 2) {
         this.currentStep--
+        return
       }
     },
   },
@@ -87,6 +100,7 @@ export default {
   background: #000000;
   color: #fff;
   overflow-y: auto;
+
   .navbar {
     position: relative;
     display: flex;
@@ -110,6 +124,7 @@ export default {
       font-size: 18px;
     }
   }
+
   .content {
     flex: 1;
     display: flex;
@@ -129,6 +144,7 @@ export default {
     border-radius: 14px;
     background: #f0c473;
     margin-top: 40px;
+
     text {
       font-size: 17px;
       font-weight: 600;

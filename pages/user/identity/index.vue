@@ -2,10 +2,11 @@
   <view class="page">
     <view class="navbar">
       <image
+        @tap="goBack"
         class="back"
-        @tap="$goBack"
         src="../../../static/icons/icon-back-512.png"
-        mode="scaleToFill" />
+        mode="scaleToFill"
+      />
       <text class="title">信息認證</text>
     </view>
 
@@ -15,7 +16,8 @@
           <image
             class="logo"
             src="../../../static/image/identity-logo.png"
-            mode="scaleToFill" />
+            mode="scaleToFill"
+          />
           <view class="texts">
             <view>完成您的信息認證</view>
             <view>開啟Kings完全用戶權限</view>
@@ -39,7 +41,7 @@
       </view>
 
       <view class="bottom">
-        <view class="btn" @tap="$toPage('/pages/user/identity/steps/steps')">
+        <view class="btn" @tap="$toPage('/pages/user/identity/steps/index')">
           <text>開始認證</text>
         </view>
         <text class="time">預計用時: 3分鐘</text>
@@ -52,15 +54,31 @@
 export default {
   components: {},
   data() {
-    return {}
+    return {};
   },
   computed: {},
-  methods: {},
+  methods: {
+    goBack() {
+      uni.switchTab({ url: "/pages/index/index" });
+    },
+    async getRealNameStatus() {
+      const resp = await this.$request.post("/finance/card/payInfoSummary");
+      if (resp.data.code === 0) {
+        const { realNameStatus } = resp.data.data;
+        if (realNameStatus && realNameStatus !== 0) {
+          uni.removeStorageSync("identity_data");
+          return uni.switchTab({ url: "/pages/index/index" });
+        }
+      }
+    },
+  },
   watch: {},
+
+  mounted() {},
 
   // 页面周期函数--监听页面加载
   onLoad() {
-    console.log(getCurrentPages())
+    this.getRealNameStatus();
   },
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},
@@ -78,7 +96,7 @@ export default {
   // onPageScroll(event) {},
   // 页面处理函数--用户点击右上角分享
   // onShareAppMessage(options) {},
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -130,6 +148,7 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 40px;
+
       .box1 {
         display: flex;
         flex-direction: column;
@@ -140,11 +159,13 @@ export default {
         background-color: #1f2029;
         border-radius: 18px;
         padding: 21px 24px 21px 0;
+
         .logo {
           width: 200px;
           height: 40px;
           margin-left: 24px;
         }
+
         .texts {
           margin-left: 30px;
           color: #e6ccaa;
@@ -153,6 +174,7 @@ export default {
           line-height: 28px;
         }
       }
+
       .box2 {
         display: flex;
         flex-direction: column;
@@ -163,15 +185,18 @@ export default {
         height: 132px;
         background-color: rgba(71, 76, 100, 0.15);
         border-radius: 18px;
+
         .title {
           text-align: center;
           font-size: 16px;
           color: #999;
         }
+
         .steps {
           display: flex;
           flex-direction: column;
           gap: 4px;
+
           &__box1 {
             display: flex;
             flex-direction: row;
@@ -181,7 +206,9 @@ export default {
             border-radius: 49px;
             background: hsla(234, 20%, 60%, 0.2);
             padding: 4px;
+
             .step {
+              position: relative;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -191,8 +218,20 @@ export default {
               height: 40px;
               background-color: hsla(0, 0%, 0%, 0.5);
               border-radius: 50%;
+
+              &:not(:last-child)::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: -88px;
+                width: 84px;
+                height: 1px;
+                border-top: 1px dashed hsla(0, 0%, 59%, 1);
+              }
             }
           }
+
           &__box2 {
             display: flex;
             justify-content: space-between;
@@ -201,40 +240,44 @@ export default {
             line-height: 17px;
             padding: 0 2px 0 2px;
           }
-          .step:nth-child(2) {
-            position: relative;
-            &::after {
-              content: '';
-              position: absolute;
-              top: 50%;
-              transform: translateY(-50%);
-              left: -88px;
-              width: 84px;
-              height: 1px;
-              border-top: 1px dashed hsla(0, 0%, 59%, 1);
-            }
-            &::before {
-              content: '';
-              position: absolute;
-              top: 50%;
-              transform: translateY(-50%);
-              right: -88px;
-              width: 84px;
-              height: 1px;
-              border-top: 1px dashed hsla(0, 0%, 59%, 1);
-            }
-          }
+
+          // .step:nth-child(2) {
+          //   position: relative;
+          //   &::after {
+          //     content: '';
+          //     position: absolute;
+          //     top: 50%;
+          //     transform: translateY(-50%);
+          //     left: -88px;
+          //     width: 84px;
+          //     height: 1px;
+          //     border-top: 1px dashed hsla(0, 0%, 59%, 1);
+          //   }
+          //   &::before {
+          //     content: '';
+          //     position: absolute;
+          //     top: 50%;
+          //     transform: translateY(-50%);
+          //     right: -88px;
+          //     width: 84px;
+          //     height: 1px;
+          //     border-top: 1px dashed hsla(0, 0%, 59%, 1);
+          //   }
+          // }
         }
       }
     }
 
     .bottom {
-      flex: 1;
+      // flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 16px;
       margin-top: 192px;
+      padding-bottom: env(safe-area-inset-bottom); // 底部安全区
+      margin-bottom: env(safe-area-inset-bottom);
+
       .btn {
         display: flex;
         justify-content: center;
@@ -243,12 +286,14 @@ export default {
         height: 48px;
         border-radius: 14px;
         background: #f0c473;
+
         text {
           font-size: 17px;
           font-weight: 600;
           color: #000;
         }
       }
+
       .time {
         font-size: 14px;
         color: #999;

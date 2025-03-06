@@ -46,7 +46,7 @@
                   </text>
                 </view>
               </view>
-              <view class="page__body-content-data__item-button"> 兌換 </view>
+              <!-- <view class="page__body-content-data__item-button"> 兌換 </view> -->
             </view>
           </view>
         </template>

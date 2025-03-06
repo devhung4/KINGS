@@ -1398,7 +1398,7 @@
 			}
 		},
 		{
-			"path" : "pages/user/identity/steps/steps",
+			"path" : "pages/user/identity/steps/index",
 			"style" : 
 			{
 				"navigationBarTitleText" : "",
